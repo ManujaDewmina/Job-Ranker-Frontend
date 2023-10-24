@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "741291896587",
+    "project_id": "jobranker-2cc2b",
+    "storage_bucket": "jobranker-2cc2b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:741291896587:android:43e65165ee8ec4c2a9fc0e",
+        "android_client_info": {
+          "package_name": "com.example.job_ranker"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDehtx8wUmXFsiKBn-wuHh3j7n_XCiBYUo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
