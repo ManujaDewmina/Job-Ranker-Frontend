@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../Utils/color_utils.dart';
+import '../screen/add_review_screen.dart';
 import '../screen/home_screen_test.dart';
+import '../screen/new_review_screen.dart';
 import '../screen/rated_job_details_screen.dart';
 import '../screen/sign_in_screen.dart';
 
@@ -51,10 +53,6 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType, Tex
         ? TextInputType.visiblePassword
         : TextInputType.emailAddress,
   );
-}
-
-void setState(Null Function() param0) {
-  obscureText: false;
 }
 
 Container signInSignUpButton(BuildContext context, String text1, Function onTap){
@@ -195,11 +193,11 @@ Drawer appDrawer(BuildContext context) {
         ),
         ListTile(
           leading: const Icon(
-            FontAwesomeIcons.magnifyingGlassPlus,
+            Icons.add_box_outlined,
             color: Colors.white,
           ),
           title: const Text(
-            'Search Jobs',
+            'Review Jobs',
             style: TextStyle(
               color: Colors.white, // White text color
             ),
@@ -208,7 +206,7 @@ Drawer appDrawer(BuildContext context) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const HomeScreen()));
+                    builder: (context) => const NewReviewScreen()));
           },
         ),
         ListTile(

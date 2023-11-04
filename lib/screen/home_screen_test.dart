@@ -1,10 +1,6 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:job_ranker/reusable_widgets/reusable_widget.dart';
-import 'package:job_ranker/screen/sign_in_screen.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../Utils/color_utils.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,11 +12,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int activeCardIndex = 0;
-  //var currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
-    //String? email = currentUser?.email;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: hexStringToColor("1a3f49"),
@@ -49,10 +43,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     enlargeCenterPage: true,
                   ),
                   items: [
-                    swapCard("Search Jobs","assert/images/1slider.jpg"),
+                    swapCard("Review Jobs","assert/images/1slider.jpg"),
                     swapCard("Rated job Details","assert/images/2slider.jpg"),
                     swapCard("Job Classifier","assert/images/3slider.jpg")
                   ]),
+              const SizedBox(height: 30,),
+              const Image(
+                image: AssetImage('assert/images/app_logo.png'),
+                height: 250,
+              ),
             ],
           ),
         ),

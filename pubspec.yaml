@@ -38,6 +38,7 @@ dependencies:
   cloud_firestore: ^4.9.3
   http: ^1.1.0
   syncfusion_flutter_charts: ^23.1.42
+  syncfusion_flutter_gauges: ^23.1.42
 
 dev_dependencies:
   flutter_test:

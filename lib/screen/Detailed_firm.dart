@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:job_ranker/reusable_widgets/reusable_widget.dart';
 import '../Utils/color_utils.dart';
 import '../gateway/backend.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:syncfusion_flutter_gauges/gauges.dart' as gauges;
 
 class ChartData {
   final String x;
@@ -25,19 +23,7 @@ class DetailedFirmScreen extends StatefulWidget {
 
 class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
   final String firmName;
-  List<double> ratings = [
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0,
-    0.0
-  ];
+  List<double> ratings = [0.0];
   List<Map<String, int>> yearCountData = [
     {'year': 0, 'year_count': 0}
   ];
@@ -57,13 +43,16 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
       Map<String, dynamic> firmData = data.isNotEmpty ? data[0] : {};
       Map<String, dynamic> firmSentimentDetails =
           dataSentiment.isNotEmpty ? dataSentiment[0] : {};
-      yearCountData = yearCount.map((dynamic item) {
-        Map<String, int> mappedItem = {
-          'year': item['year'] ?? 0,
-          'year_count': item['year_count'] ?? 0,
-        };
-        return mappedItem;
-      }).toList();
+      yearCountData = yearCount
+          .map((dynamic item) {
+            Map<String, int> mappedItem = {
+              'year': item['year'] ?? 0,
+              'year_count': item['year_count'] ?? 0,
+            };
+            return mappedItem;
+          })
+          .take(10)
+          .toList();
       titleCountData = titleCount
           .map((dynamic item) {
             Map<String, dynamic> mappedItem = {
@@ -83,11 +72,8 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
       double recommendToFriend = firmData['recommend'] ?? 0.0;
       double ceoApproval = firmData['ceo_approv'] ?? 0.0;
 
-      double predicted_score = firmSentimentDetails['predicted_score'] ?? 0.0;
-      double pros_predicted_score =
-          firmSentimentDetails['pros_predicted_score'] ?? 0.0;
-      double cons_predicted_score =
-          firmSentimentDetails['cons_predicted_score'] ?? 0.0;
+      double predicted_score = firmSentimentDetails['Predicted_Sentiments'] ?? 0.0;
+
       return [
         workLifeBalance,
         cultureValues,
@@ -97,13 +83,11 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
         seniorManagement,
         recommendToFriend,
         ceoApproval,
-        predicted_score,
-        pros_predicted_score,
-        cons_predicted_score
+        predicted_score
       ];
     } catch (error) {
       print('Error fetching firm details: $error');
-      return List.filled(8, 0.0);
+      return List.filled(9, 0.0);
     }
   }
 
@@ -129,63 +113,36 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
               future: _loadFirmDetails(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const CircularProgressIndicator();
+                  return const Center(child: CircularProgressIndicator(
+                    color: Colors.white24,
+                  ));
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   ratings = snapshot.data!;
                   return Column(
                     children: <Widget>[
-                      Text(
-                        firmName,
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      SfCartesianChart(
-                        primaryXAxis: CategoryAxis(
-                          labelRotation: -90,
-                        ),
-                        title: ChartTitle(
-                            text: 'Job Title vs Number of Reviews',
-                            textStyle: const TextStyle(color: Colors.white)),
-                        legend: Legend(isVisible: false),
-                        tooltipBehavior: TooltipBehavior(enable: true),
-                        series: <ChartSeries>[
-                          ColumnSeries<Map<String, dynamic>, String>(
-                              dataSource: titleCountData,
-                              xValueMapper: (Map<String, dynamic> data, _) =>
-                                  data['job_title'].toString(),
-                              yValueMapper: (Map<String, dynamic> data, _) =>
-                                  data['title_count'],
-                              dataLabelSettings:
-                                  const DataLabelSettings(isVisible: true))
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      const SizedBox(height: 12),
-                      //year cout data in bar chart year vs count
-                      SfCartesianChart(
-                        primaryXAxis: CategoryAxis(),
-                        // Chart title
-                        title: ChartTitle(
-                            text: 'Year vs Number of Reviews',
-                            textStyle: TextStyle(color: Colors.white)),
-                        // Enable legend
-                        legend: Legend(isVisible: false),
-                        // Enable tooltip
-                        tooltipBehavior: TooltipBehavior(enable: true),
-                        series: <ChartSeries>[
-                          ColumnSeries<Map<String, int>, String>(
-                              dataSource: yearCountData,
-                              xValueMapper: (Map<String, int> data, _) =>
-                                  data['year'].toString(),
-                              yValueMapper: (Map<String, int> data, _) =>
-                                  data['year_count'],
-                              dataLabelSettings:
-                                  const DataLabelSettings(isVisible: true))
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(FontAwesomeIcons.briefcase,
+                              color: Colors.white),
+                          const SizedBox(width: 10.0),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width/1.3,
+                            child: Wrap(
+                              children: [
+                                Text(
+                                  firmName,
+                                  style: const TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                       const SizedBox(height: 12),
@@ -245,21 +202,9 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 15),
                           _circleBar("Score for reviews", ratings[8]),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 2.3,
-                                child: _circleBar("Score for pros", ratings[9]),
-                              ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width / 2.3,
-                                child:
-                                    _circleBar("Score for cons", ratings[10]),
-                              ),
-                            ],
-                          ),
+                          const SizedBox(height: 15),
                           _buildCategory("Work-Life Balance", ratings[0]),
                           const SizedBox(height: 8),
                           _buildCategory("Culture Values", ratings[1]),
@@ -276,6 +221,67 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
                           const SizedBox(height: 8),
                           _buildCategory("CEO Approval", ratings[7]),
                           const SizedBox(height: 8),
+                          SfCartesianChart(
+                            primaryXAxis: CategoryAxis(
+                              labelRotation: -90,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              minorGridLines: const MinorGridLines(width: 0),
+                            ),
+                            primaryYAxis: NumericAxis(
+                              labelStyle: const TextStyle(color: Colors.white),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              minorGridLines: const MinorGridLines(width: 0),
+                            ),
+                            title: ChartTitle(
+                                text: 'Job Title vs Number of Reviews',
+                                textStyle:
+                                    const TextStyle(color: Colors.white)),
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                            series: <ChartSeries>[
+                              ColumnSeries<Map<String, dynamic>, String>(
+                                  dataSource: titleCountData,
+                                  xValueMapper:
+                                      (Map<String, dynamic> data, _) =>
+                                          data['job_title'].toString(),
+                                  yValueMapper:
+                                      (Map<String, dynamic> data, _) =>
+                                          data['title_count'],
+                                  dataLabelSettings:
+                                      const DataLabelSettings(isVisible: true),
+                                  color: Colors.green),
+                            ],
+                          ),
+                          SfCartesianChart(
+                            primaryXAxis: CategoryAxis(
+                              labelRotation: -90,
+                              labelStyle: const TextStyle(color: Colors.white),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              minorGridLines: const MinorGridLines(width: 0),
+                            ),
+                            primaryYAxis: NumericAxis(
+                              labelStyle: const TextStyle(color: Colors.white),
+                              majorGridLines: const MajorGridLines(width: 0),
+                              minorGridLines: const MinorGridLines(width: 0),
+                            ),
+                            title: ChartTitle(
+                                text: 'Year vs Number of Reviews',
+                                textStyle:
+                                    const TextStyle(color: Colors.white)),
+                            legend: const Legend(isVisible: false),
+                            tooltipBehavior: TooltipBehavior(enable: true),
+                            series: <ChartSeries>[
+                              ColumnSeries<Map<String, int>, String>(
+                                  dataSource: yearCountData,
+                                  xValueMapper: (Map<String, int> data, _) =>
+                                      data['year'].toString(),
+                                  yValueMapper: (Map<String, int> data, _) =>
+                                      data['year_count'],
+                                  dataLabelSettings:
+                                      const DataLabelSettings(isVisible: true),
+                                  color: Colors.green),
+                            ],
+                          ),
                         ],
                       ),
                     ],
@@ -291,30 +297,63 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
   }
 
   Widget _circleBar(String topic, double rating) {
-    return SfCircularChart(
-      //circular chart
-      title: ChartTitle(
-        text: topic,
-        textStyle: const TextStyle(
-          color: Colors.white,
-        ),
-      ),
-      margin: const EdgeInsets.only(top: 1.0),
-      series: <CircularSeries>[
-        DoughnutSeries<ChartData, String>(
-          dataSource: <ChartData>[
-            ChartData('Good', rating * 100),
-            ChartData('Bad', 100 - rating * 100),
-          ],
-          xValueMapper: (ChartData data, _) => data.x,
-          pointColorMapper: (ChartData data, _) =>
-              data.x == 'Good' ? Colors.green : hexStringToColor("1a3f49"),
-          yValueMapper: (ChartData data, _) => data.y,
-          dataLabelSettings: const DataLabelSettings(
-            isVisible: true,
+    return SizedBox(
+      height: 150,
+      width: 150,
+      child: gauges.SfRadialGauge(
+        axes: [
+          gauges.RadialAxis(
+            startAngle: 90,
+            endAngle: 90,
+            minimum: 0,
+            maximum: 100,
+            showLabels: false,
+            showTicks: false,
+            axisLineStyle: gauges.AxisLineStyle(
+              thickness: 0.15,
+              color: hexStringToColor("1a3f49"),
+              thicknessUnit: gauges.GaugeSizeUnit.factor,
+            ),
+            pointers: [
+              gauges.RangePointer(
+                color: Colors.green,
+                animationType: gauges.AnimationType.ease,
+                enableAnimation: true,
+                cornerStyle: gauges.CornerStyle.bothCurve,
+                width: 0.15,
+                sizeUnit: gauges.GaugeSizeUnit.factor,
+                value: (rating * 10),
+              ),
+            ],
+            annotations: <gauges.GaugeAnnotation>[
+              gauges.GaugeAnnotation(
+                positionFactor: 0.1,
+                angle: 90,
+                widget: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: '$topic\n',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '${(rating * 10).toStringAsFixed(2)} %',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -323,35 +362,42 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
       padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
       decoration: BoxDecoration(
         color: hexStringToColor("244e54"),
-        borderRadius: BorderRadius.circular(
-            10), // You can adjust the radius as per your preference
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
         children: <Widget>[
           Text(categoryName,
               style: const TextStyle(
-                  fontWeight: FontWeight.bold, color: Colors.black)),
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 13)),
           const SizedBox(height: 8),
           Text("${(rating * 10).toStringAsFixed(2)} %",
-              style: const TextStyle(color: Colors.black)),
+              style: const TextStyle(color: Colors.white, fontSize: 12)),
           const SizedBox(height: 4),
           Container(
-            width: MediaQuery.of(context).size.width,
-            height: 10,
             decoration: BoxDecoration(
-              color: Colors.black26,
-              borderRadius: BorderRadius.circular(5),
+              borderRadius: BorderRadius.circular(10.0),
+              color: hexStringToColor("1a3f49"),
             ),
-            child: FractionallySizedBox(
-              alignment: Alignment.centerLeft,
-              widthFactor: rating / 10,
-              child: Container(
-                height: 10,
-                decoration: BoxDecoration(
+            child: gauges.SfLinearGauge(
+              orientation: gauges.LinearGaugeOrientation.horizontal,
+              minimum: 0,
+              maximum: 100,
+              showLabels: false,
+              showTicks: false,
+              showAxisTrack: false,
+              isMirrored: true,
+              barPointers: [
+                gauges.LinearBarPointer(
+                  thickness: 9,
+                  enableAnimation: true,
+                  value: rating * 10,
+                  edgeStyle: gauges.LinearEdgeStyle.bothCurve,
+                  position: gauges.LinearElementPosition.inside,
                   color: Colors.green,
-                  borderRadius: BorderRadius.circular(5),
                 ),
-              ),
+              ],
             ),
           ),
           const SizedBox(height: 10),
