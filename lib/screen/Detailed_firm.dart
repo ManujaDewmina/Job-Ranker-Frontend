@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:job_ranker/reusable_widgets/reusable_widget.dart';
@@ -22,6 +23,7 @@ class DetailedFirmScreen extends StatefulWidget {
 }
 
 class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
+  var currentUser = FirebaseAuth.instance.currentUser;
   final String firmName;
   List<double> ratings = [0.0];
   List<Map<String, int>> yearCountData = [
@@ -72,7 +74,8 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
       double recommendToFriend = firmData['recommend'] ?? 0.0;
       double ceoApproval = firmData['ceo_approv'] ?? 0.0;
 
-      double predicted_score = firmSentimentDetails['Predicted_Sentiments'] ?? 0.0;
+      double predicted_score =
+          firmSentimentDetails['Predicted_Sentiments'] ?? 0.0;
 
       return [
         workLifeBalance,
@@ -96,6 +99,25 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: hexStringToColor("1a3f49"),
+        actions: [
+          GestureDetector(
+            onTap: () async {
+              await addFavourite(currentUser!.uid, firmName);
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(ackMessage('Added to favourites successfully!'));
+            },
+            child: const Row(children: [
+              Text(
+                'Add to favourite',
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
+              SizedBox(width: 5),
+              Icon(Icons.add)
+            ]),
+          ),
+        ],
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -113,7 +135,8 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
               future: _loadFirmDetails(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator(
+                  return const Center(
+                      child: CircularProgressIndicator(
                     color: Colors.white24,
                   ));
                 } else if (snapshot.hasError) {
@@ -129,7 +152,7 @@ class _DetailedFirmScreenState extends State<DetailedFirmScreen> {
                               color: Colors.white),
                           const SizedBox(width: 10.0),
                           SizedBox(
-                            width: MediaQuery.of(context).size.width/1.3,
+                            width: MediaQuery.of(context).size.width / 1.3,
                             child: Wrap(
                               children: [
                                 Text(

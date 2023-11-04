@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:job_ranker/screen/sign_in_screen.dart';
 import '../Utils/color_utils.dart';
+import '../gateway/backend.dart';
 import '../reusable_widgets/reusable_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -25,11 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // title: const Text(
-        //   "Sign Up",
-        //   style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold
-        //   ),
-        // ),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -80,15 +75,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: _emailTextController.text, password: _passwordTextController.text);
                       User? user = FirebaseAuth.instance.currentUser;
                       if (user!= null) {
-                        var db = FirebaseFirestore.instance;
-                        final dbuser = <String, String>{
-                          "username": _userNameTextController.text,
-                          "useremail": _emailTextController.text,
-                        };
-                        db
-                            .collection("Users")
-                            .doc(user.uid)
-                            .set(dbuser);
+                        await addUser(user.uid,_userNameTextController.text,_emailTextController.text);
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(ackMessage('User Created successfully!'));
                       }
                       Navigator.push(context, MaterialPageRoute(builder: (context)=> const SignInScreen()));
                     }

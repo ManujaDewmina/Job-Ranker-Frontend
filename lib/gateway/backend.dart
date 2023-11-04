@@ -4,6 +4,77 @@ import 'dart:convert';
 
 String baseUrl = 'http://192.168.1.16:8000';
 
+Future<void> addFavourite(String userId,String firm) async {
+  final String url = '$baseUrl/add_favourite';
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'userid': userId,
+        'firm': firm,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Data sent successfully!');
+    } else {
+      print('Failed to send data. Error: ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error: $error');
+  }
+}
+
+Future<List<dynamic>> fetchFavouritesDetails(String userId) async {
+  final response = await http.get(Uri.parse('$baseUrl/get_favourites?userid=$userId'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> favDetails = json.decode(response.body);
+    return favDetails;
+  } else {
+    throw Exception('Failed to load user details');
+  }
+}
+
+Future<void> addUser(String userId,String userName,String userEmail) async {
+  final String url = '$baseUrl/add_user';
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, String>{
+        'userid': userId,
+        'username': userName,
+        'useremail': userEmail,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Data sent successfully!');
+    } else {
+      print('Failed to send data. Error: ${response.statusCode}');
+    }
+  } catch (error) {
+    print('Error: $error');
+  }
+}
+
+Future<List<dynamic>> fetchUserDetails(String userId) async {
+  final response = await http.get(Uri.parse('$baseUrl/get_user?userid=$userId'));
+
+  if (response.statusCode == 200) {
+    List<dynamic> userDetails = json.decode(response.body);
+    return userDetails;
+  } else {
+    throw Exception('Failed to load user details');
+  }
+}
+
 Future<void> sendFirmReviewData(
     String firmName,
     String jobTitle,
@@ -60,7 +131,6 @@ Future<void> sendFirmReviewData(
 
 Future<List<String>> fetchFirmNames() async {
   final response = await http.get(Uri.parse('$baseUrl/firm_names'));
-  log("test");
   if (response.statusCode == 200) {
     List<dynamic> data = json.decode(response.body);
     List<String> firmNames = data.cast<String>();

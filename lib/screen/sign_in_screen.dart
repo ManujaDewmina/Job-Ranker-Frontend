@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:job_ranker/Utils/color_utils.dart';
 import 'package:job_ranker/reusable_widgets/reusable_widget.dart';
 import 'package:job_ranker/screen/forgot_password_screen.dart';
-import 'package:job_ranker/screen/home_screen_test.dart';
+import 'package:job_ranker/screen/home_screen.dart';
 import 'package:job_ranker/screen/sign_up_screen.dart';
 
 class SignInScreen extends StatefulWidget {

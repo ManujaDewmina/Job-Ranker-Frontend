@@ -1,15 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:job_ranker/screen/classifier_screen.dart';
+import 'package:job_ranker/screen/profile_screen.dart';
 
 import '../Utils/color_utils.dart';
 import '../screen/add_review_screen.dart';
-import '../screen/home_screen_test.dart';
+import '../screen/home_screen.dart';
 import '../screen/new_review_screen.dart';
 import '../screen/rated_job_details_screen.dart';
 import '../screen/sign_in_screen.dart';
 
-Image logoWidget(String imageName){
+Image logoWidget(String imageName) {
   return Image.asset(
     imageName,
     fit: BoxFit.fitWidth,
@@ -19,35 +21,28 @@ Image logoWidget(String imageName){
   );
 }
 
-TextField reusableTextField(String text, IconData icon, bool isPasswordType, TextEditingController controller) {
+TextField reusableTextField(String text, IconData icon, bool isPasswordType,
+    TextEditingController controller) {
   return TextField(
     controller: controller,
     obscureText: isPasswordType,
     enableSuggestions: !isPasswordType,
     autocorrect: !isPasswordType,
     cursorColor: Colors.white,
-    style: TextStyle(
-        color: Colors.white.withOpacity(0.9)
-    ),
+    style: TextStyle(color: Colors.white.withOpacity(0.9)),
     decoration: InputDecoration(
       prefixIcon: Icon(
         icon,
         color: Colors.white,
       ),
       labelText: text,
-      labelStyle: TextStyle(
-          color: Colors.white.withOpacity(0.3)
-      ),
+      labelStyle: TextStyle(color: Colors.white.withOpacity(0.3)),
       filled: true,
       floatingLabelBehavior: FloatingLabelBehavior.never,
       fillColor: Colors.white.withOpacity(0.1),
       border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20.0),
-          borderSide: const BorderSide(
-              width: 0,
-              style:  BorderStyle.none
-          )
-      ),
+          borderSide: const BorderSide(width: 0, style: BorderStyle.none)),
     ),
     keyboardType: isPasswordType
         ? TextInputType.visiblePassword
@@ -55,41 +50,36 @@ TextField reusableTextField(String text, IconData icon, bool isPasswordType, Tex
   );
 }
 
-Container signInSignUpButton(BuildContext context, String text1, Function onTap){
+Container signInSignUpButton(
+    BuildContext context, String text1, Function onTap) {
   return Container(
     width: MediaQuery.of(context).size.width,
     height: 50,
     margin: const EdgeInsets.fromLTRB(210, 10, 0, 20),
     decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
     child: ElevatedButton(
-      onPressed: (){
+      onPressed: () {
         onTap();
       },
       style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.resolveWith((states){
-            if(states.contains(MaterialState.pressed)){
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.pressed)) {
               return Colors.black26;
             }
             return Colors.white;
           }),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(borderRadius:  BorderRadius.circular(20))
-          )
-      ),
-
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)))),
       child: Text(
         text1,
         style: const TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 16
-        ),
+            color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
       ),
     ),
   );
 }
 
-SnackBar errorMessage(String msg){
+SnackBar errorMessage(String msg) {
   return SnackBar(
     content: Container(
         padding: const EdgeInsets.all(16),
@@ -100,25 +90,26 @@ SnackBar errorMessage(String msg){
         ),
         child: Column(
           children: [
-            const Text("ERROR",
+            const Text(
+              "ERROR",
               style: TextStyle(fontSize: 16, color: Colors.black87),
             ),
             const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-            Text(msg,
-              style: const TextStyle(color: Colors.black54,fontSize: 14),
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.black54, fontSize: 14),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ],
-        )
-    ),
+        )),
     behavior: SnackBarBehavior.fixed,
     backgroundColor: Colors.transparent,
     elevation: 0,
   );
 }
 
-SnackBar ackMessage(String msg){
+SnackBar ackMessage(String msg) {
   return SnackBar(
     content: Container(
         padding: const EdgeInsets.all(16),
@@ -129,18 +120,19 @@ SnackBar ackMessage(String msg){
         ),
         child: Column(
           children: [
-            const Text("Info",
+            const Text(
+              "Info",
               style: TextStyle(fontSize: 16, color: Colors.black87),
             ),
             const Padding(padding: EdgeInsets.fromLTRB(0, 10, 0, 0)),
-            Text(msg,
-              style: const TextStyle(color: Colors.black54,fontSize: 14),
+            Text(
+              msg,
+              style: const TextStyle(color: Colors.black54, fontSize: 14),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
           ],
-        )
-    ),
+        )),
     behavior: SnackBarBehavior.fixed,
     backgroundColor: Colors.transparent,
     elevation: 0,
@@ -177,6 +169,22 @@ Drawer appDrawer(BuildContext context) {
             )),
         ListTile(
           leading: const Icon(
+            FontAwesomeIcons.home,
+            color: Colors.white,
+          ),
+          title: const Text(
+            'Home',
+            style: TextStyle(
+              color: Colors.white, // White text color
+            ),
+          ),
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
+          },
+        ),
+        ListTile(
+          leading: const Icon(
             FontAwesomeIcons.circleUser,
             color: Colors.white,
           ),
@@ -188,7 +196,7 @@ Drawer appDrawer(BuildContext context) {
           ),
           onTap: () {
             Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()));
+                MaterialPageRoute(builder: (context) => const ProfileScreen()));
           },
         ),
         ListTile(
@@ -240,7 +248,7 @@ Drawer appDrawer(BuildContext context) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const HomeScreen()));
+                    builder: (context) => const ClassifierScreen()));
           },
         ),
         ListTile(
@@ -270,45 +278,46 @@ Drawer appDrawer(BuildContext context) {
 
 Card swapCard(String topic, String imageUrl) {
   return Card(
-    elevation: 10,
-    color: Colors.transparent,
-    shape: const RoundedRectangleBorder(
-      side: BorderSide(
-        color: Colors.white,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(12)),
-    ),
-  child: SizedBox(
-    width: 250,
-    height: 200,
-  child: Stack(
-    children: [
-    Opacity(
-      opacity: 0.5,
-      // Image widget as the background
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-          child: Image.asset(
-            imageUrl, // Provide the asset image path
-            width: double.infinity,
-            height: double.infinity,
-            fit: BoxFit.cover, // Adjust the fit based on your image requirements
-          ),
-      ),
-    ),
-      // Centered text widget on top of the image
-      Center(
-        child: Text(
-          topic,
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
+      elevation: 10,
+      color: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        side: BorderSide(
+          color: Colors.white,
         ),
+        borderRadius: BorderRadius.all(Radius.circular(12)),
       ),
-    ],
-  )
-  )
+      child: SizedBox(
+          width: 250,
+          height: 200,
+          child: Stack(
+            children: [
+              Opacity(
+                opacity: 0.5,
+                // Image widget as the background
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    imageUrl, // Provide the asset image path
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit
+                        .cover, // Adjust the fit based on your image requirements
+                  ),
+                ),
+              ),
+              // Centered text widget on top of the image
+              Center(
+                child: Text(
+                  topic,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          )
+      )
   );
 }

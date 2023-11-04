@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:job_ranker/gateway/backend.dart';
 import 'package:job_ranker/reusable_widgets/reusable_widget.dart';
 import '../Utils/color_utils.dart';
-import 'home_screen_test.dart';
+import 'home_screen.dart';
 
 class AddReviewScreen extends StatefulWidget {
   final String firmName;
