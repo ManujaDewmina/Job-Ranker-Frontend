@@ -2,7 +2,54 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String baseUrl = 'http://192.168.1.16:8000';
+String baseUrl = 'http://192.168.1.11:8000';
+
+Future<List<dynamic>> fetchSortedFirmAverages(
+    bool workLifeBalance,
+    bool cultureValues,
+    bool diversityInclusion,
+    bool careerOpp,
+    bool compBenefits,
+    bool seniorMgmt,
+    bool recommend,
+    bool ceoApprov,
+    bool reviewRating,
+    ) async {
+  final String url = '$baseUrl/sorted_firm_averages';
+
+  Map<String, dynamic> data = {
+    'work_life_balance': workLifeBalance,
+    'culture_values': cultureValues,
+    'diversity_inclusion': diversityInclusion,
+    'career_opp': careerOpp,
+    'comp_benefits': compBenefits,
+    'senior_mgmt': seniorMgmt,
+    'recommend': recommend,
+    'ceo_approv': ceoApprov,
+    'review_rating': reviewRating,
+  };
+
+  try {
+    final response = await http.post(
+      Uri.parse(url),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
+      List<dynamic> sortedFirmAverages = json.decode(response.body);
+      return sortedFirmAverages;
+    } else {
+      throw Exception('Failed to load sorted firm averages');
+    }
+  } catch (error) {
+    print('Error: $error');
+    List<dynamic> sortedFirmAverages = [];
+    return sortedFirmAverages;
+  }
+}
 
 Future<void> addFavourite(String userId,String firm) async {
   final String url = '$baseUrl/add_favourite';
