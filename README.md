@@ -8,11 +8,11 @@ The evaluation of the system is conducted on the Glassdoor job reviews data set,
 ## Development Architecture Diagram
 ![Development](https://github.com/ManujaDewmina/JobRanker-frontend/assets/92631934/63cddab1-71f6-4d57-83d4-0f94e1ddebc1)
 
-##Model Performance
+## Model Performance
 ![lstm 1](https://github.com/ManujaDewmina/JobRanker-frontend/assets/92631934/99c74e68-911e-4308-ba6d-6dc8351bef1d)
 
-##Model Architecture Diagram
+## Model Architecture Diagram
 ![model](https://github.com/ManujaDewmina/JobRanker-frontend/assets/92631934/5ed8b6b7-e0f5-4207-bdfd-a900f227c974)
 
-##Deployment Architecture Diagram
+## Deployment Architecture Diagram
 ![deploymentbw](https://github.com/ManujaDewmina/JobRanker-frontend/assets/92631934/29505680-711a-4210-90ca-b0789a4d6201)
