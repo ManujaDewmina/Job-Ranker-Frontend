@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         },
-                        child: swapCard("Review Jobs", "assert/images/1slider.jpg"),
+                        child: swapCard("Review Jobs", "assets/images/1slider.jpg"),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -63,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         },
-                        child: swapCard("Rated job Details", "assert/images/2slider.jpg"),
+                        child: swapCard("Rated job Details", "assets/images/2slider.jpg"),
                       ),
                       GestureDetector(
                         onTap: () {
@@ -74,15 +74,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           );
                         },
-                        child: swapCard("Job Classifier", "assert/images/3slider.jpg"),
+                        child: swapCard("Job Classifier", "assets/images/3slider.jpg"),
                       ),
                     ]),
                 const SizedBox(
-                  height: 30,
+                  height: 20,
                 ),
                 const Image(
-                  image: AssetImage('assert/images/app_logo.png'),
-                  height: 250,
+                  image: AssetImage('assets/images/app_logo.png'),
+                  height: 210,
                 ),
               ],
             ),

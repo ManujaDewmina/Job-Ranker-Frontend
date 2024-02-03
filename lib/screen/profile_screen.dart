@@ -103,7 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Text(
                               'User Name:',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -111,7 +111,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Text(
                               '${userDetails![0]['username']}',
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 12,
                               ),
                             ),
                           ],
@@ -134,7 +134,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             const Text(
                               'Email:',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -142,7 +142,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             Text(
                               '${userDetails![0]['useremail']}',
                               style: const TextStyle(
-                                fontSize: 18,
+                                fontSize: 12,
                               ),
                             ),
                           ],

@@ -162,7 +162,7 @@ Drawer appDrawer(BuildContext context) {
                   height: 10,
                 ),
                 Image(
-                  image: AssetImage('assert/images/Logo.png'),
+                  image: AssetImage('assets/images/Logo.png'),
                   height: 100,
                 ),
               ],

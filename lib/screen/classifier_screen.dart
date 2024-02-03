@@ -42,6 +42,7 @@ class _ClassifierScreenState extends State<ClassifierScreen> {
             end: Alignment.bottomCenter,
           ),
         ),
+    child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: Column(
@@ -183,6 +184,7 @@ class _ClassifierScreenState extends State<ClassifierScreen> {
             ],
           ),
         ),
+    ),
       ),
       drawer: appDrawer(context),
     );

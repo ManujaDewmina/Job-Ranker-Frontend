@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String baseUrl = 'http://192.168.1.11:8000';
+String baseUrl = 'http://10.34.26.182:8000';
 
 Future<List<dynamic>> fetchSortedFirmAverages(
     bool workLifeBalance,
